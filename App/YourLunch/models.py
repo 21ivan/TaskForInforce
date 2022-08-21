@@ -20,6 +20,16 @@ class User(AbstractUser):
         return self.email
 
 
+class Employee(models.Model):
+    user = models.ForeignKey(User,
+                             null=True,
+                             blank=True,
+                             on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.first_name
+
+
 class Dish(models.Model):
     name = models.CharField(max_length=500)
     description = models.TextField()
@@ -36,23 +46,6 @@ class Dish(models.Model):
         return self.name
 
 
-class Day(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-
-class Menu(models.Model):
-    dishes = models.ManyToManyField(Dish)
-    day = models.OneToOneField(Day,
-                               on_delete=models.CASCADE,
-                               primary_key=True)
-
-    def __str__(self):
-        return self.day.name
-
-
 class Restaurant(models.Model):
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
@@ -61,10 +54,19 @@ class Restaurant(models.Model):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=11)
     working_hours = models.CharField(max_length=200)
-    menu = models.OneToOneField(Menu,
-                                on_delete=models.CASCADE,
-                                primary_key=True, )
     rating = models.FloatField()
 
     def __str__(self):
         return "the restaurant %s " % self.name
+
+
+class Menu(models.Model):
+    restaurant = models.OneToOneField(Restaurant,
+                                      on_delete=models.CASCADE,
+                                      primary_key=True, )
+    dishes = models.ManyToManyField(Dish)
+    created_at = models.DateTimeField(auto_now_add=True)
+    creator = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.restaurant.name

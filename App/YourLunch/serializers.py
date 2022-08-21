@@ -34,7 +34,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
         model = Restaurant
         fields = ('name', 'city', 'address', 'admin_name',)
 
+
 class MenuSerializer(serializers.ModelSerializer):
+    restaurant = serializers.CharField()
     class Meta:
         model = Menu
         fields = ('__all__')

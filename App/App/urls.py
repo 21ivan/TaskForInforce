@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from YourLunch.views import RegistrationApiView, RestaurantApiView
+from YourLunch.views import RegistrationApiView, RestaurantApiView, CurrentDayListApiView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
@@ -24,5 +24,6 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='login'),
     path('restaurant_create/', RestaurantApiView.as_view(), name='create_restaurant'),
     path('restaurant_list/', RestaurantApiView.as_view(), name='list_restaurant'),
+    path('current_day_menu/', CurrentDayListApiView.as_view(), name='list_menu'),
 
 ]
